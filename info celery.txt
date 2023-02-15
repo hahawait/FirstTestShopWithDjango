@@ -1,0 +1,5 @@
+1
+celery -A project worker --pool=eventlet
+
+2
+celery -A project flower

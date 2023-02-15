@@ -1,0 +1,42 @@
+{% extends "core/base.html" %}
+
+{% block title %}Оформление заказа{% endblock %}
+
+{% block content %}
+    <h1 class="mb-12 text-3xl">Оформление заказа</h1>
+
+    {% if cart.coupon %}
+        <p class="text-2xl">Сумма заказа: {{ cart.get_total_price_after_discount|floatformat:"2" }}</p>
+    {% else %}
+        <p class="text-2xl">Сумма заказа: {{ cart.get_total_price }}</p>
+    {% endif %}
+    <br>
+    <div class="pb-6 grid grid-cols-4 gap-4 bg-gray-100">
+
+        <form action="." method="post" class="order-form">
+            {{ form.as_p }}
+            <p><input type="submit" value="Завершить" class="mt-2 py-4 px-8 text-lg bg-green-500 text-white rounded-xl hover:bg-green-700"></p>
+            {% csrf_token %}
+        </form>
+
+        <div class="col-span-3">
+            <div class="grid grid-cols-4 gap-40">
+                {% for item in cart %}
+                    <div>
+                        <div>
+                            <img src="{{ item.product.image.url }}" class="rounded-t-xl">
+                        </div>
+
+                        <div class="p-6 bg-white rounded-b-xl">
+                            <h2 class="text-2xl">{{ item.product.name }}</h2>
+                            <p class="text-gray-500">Цена: {{ item.price }}</p>
+                            <p class="text-gray-500">Количество: {{ item.quantity }}</p>
+                            <p class="text-gray-500">Всего: {{ item.total_price }}</p><br>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+</div>
+
+{% endblock %}
